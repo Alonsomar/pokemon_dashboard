@@ -1,0 +1,16 @@
+# Archivos y carpetas de entorno de desarrollo
+.idea/
+__pycache__/
+
+# Entorno virtual
+venv/
+
+# Archivos específicos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de log
+*.log
+
+# Archivos de configuración
+*.env
