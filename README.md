@@ -11,7 +11,6 @@ La app se utiliza para generar distintos gráficos y comparativas de estadístic
 Tanto las imágenes como las estadísticas se cruzan a través del número del pokemon (ID)
 
 ## Estructura del Proyecto
-
 - `app.py`: Script principal que inicia la aplicación.
 - `layout.py`: Contiene el diseño de la interfaz de la aplicación.
 - `plot_utils.py`: Funciones utilitarias para la generación de gráficos.
@@ -22,10 +21,6 @@ Tanto las imágenes como las estadísticas se cruzan a través del número del p
   - Favicon.
 - `data/`: Carpeta que contiene los datos de pokemon utilizados por la aplicación.
 - `requirements.txt`: Lista de dependencias necesarias para ejecutar la aplicación.
-
-## Requisitos
-
-- Python 3.12 (no ha sido testeado en una versión anterior)
 
 ## Instalación
 
@@ -57,10 +52,12 @@ La aplicación estará disponible en el puerto por defecto `http://127.0.0.1:805
 
 
 ## Demostración
-![Captura de pantalla](ruta/a/tu/captura.png)
+![](https://raw.githubusercontent.com/Alonsomar/pokemon_dashboard/main/captures/main_page.PNG)
+![](https://raw.githubusercontent.com/Alonsomar/pokemon_dashboard/main/captures/scatter_plot.PNG)
+![](https://raw.githubusercontent.com/Alonsomar/pokemon_dashboard/main/captures/violin_plot.PNG)
 
 ## Contribución
 Si deseas contribuir, por favor realiza un fork del repositorio y crea un pull request.
 
 ## Licencia
-Este proyecto está licenciado bajo la MIT License.
+Este proyecto está licenciado bajo MIT License.
