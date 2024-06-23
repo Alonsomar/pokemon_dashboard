@@ -1,0 +1,434 @@
+/* styles.css */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+    --main-bg-color: rgba(240, 240, 240, 0.3);
+    --main-text-color: #343a40;
+    --hover-color: rgba(240, 240, 240, 0.4);
+}
+
+/* background-color: #f8f9fa;
+background: linear-gradient(90deg, #f8f9fa 0%, #f8f9fa 10%, #eaf6ec 100%) */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+h1 {
+    color: var(--main-text-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 3em;
+    width: 100%;
+}
+
+h4 {
+    color:  var(--main-text-color);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pokemon-info {
+    text-align: center;
+    color:  var(--main-text-color);
+    margin-bottom: 20px;
+}
+
+.pokemon-info p {
+    margin: 5px 0;
+}
+
+.pokemon-image {
+    margin: 20px auto;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.pokemon-image:hover {
+    transform: scale(1.1);
+}
+
+.pokemon-details {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(240,240,240,0);
+    border: none;  /* Remove border */
+    box-shadow: none;  /* Remove shadow if any */
+}
+
+.graph-container {
+    flex: 1;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 10px;
+    margin-bottom: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.graph-card {
+    border: none;  /* Remove border */
+    box-shadow: none;  /* Remove shadow if any */
+    background-color: rgba(240,240,240,0.3);  /* Background with transparency */
+}
+
+.graph-card-header {
+    text-align: center;  /* Center the text */
+    border-bottom: none;  /* Remove the grey line */
+      /* background: none; Remove any background color if necessary */
+    font-weight: normal;  /* Optional: make the text bold */
+    font-size: 1em;  /* Optional: adjust the font size */
+}
+
+.card-header {
+    text-align: center;
+    border-bottom: none;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.graph-container:hover {
+    opacity: 0.9;
+    transform: scale(1.01);
+}
+
+.row-centered {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.sidebar {
+    background-color: rgba(240,240,240,0.4);
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: all 0.8s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 220px;
+}
+
+
+.sidebar .nav-link {
+    color:  var(--main-text-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.sidebar .nav-link span {
+    line-height: 1.2;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(240,240,240,0.4);
+    color: #495057;
+    font-weight: bold;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link.active {
+    background-color: rgba(240,240,240,0.4);
+    color: #495057;
+    font-weight: bold;
+}
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+[data-tooltip]::before,
+[data-tooltip]::after {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    padding: 10px;
+    border-radius: 5px;
+    background-color:  var(--main-text-color);
+    color: #fff;
+    white-space: nowrap;
+    z-index: 1000;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+[data-tooltip]::after {
+    content: '';
+    border-style: solid;
+    border-width: 5px 5px 0 5px;
+    border-color:  var(--main-text-color) transparent transparent transparent;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+/* Pokebola */
+.pokebola-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Pokebola en el sidebar (activación en hover) */
+/* Pokebola siempre activa como spinner de carga */
+.pokebola-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;  /* Asume todo el ancho disponible */
+    height: 100%;  /* Asume todo el alto disponible */
+}
+
+/* Pokebola en el sidebar (activación en hover) */
+.pokebola-sidebar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;  /* Asume todo el ancho disponible */
+    height: 100vh;  /* Asume todo el alto disponible */
+    animation: none;  /* Sin animación por defecto */
+}
+
+.pokebola-container {
+    display: flex;
+    width:  100%;
+    height: 100px;
+    transform: scale(.7); /* Ajusta la escala según lo necesites */
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.item {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    animation: none;
+}
+
+
+.pokebola-loading .item {
+    animation: loading 1s infinite;
+}
+
+.pokebola-sidebar .item:hover {
+    animation: loading 1.2s infinite;
+}
+
+.ball {
+    border-radius: 60%;
+    width: 100px;
+    height: 100px;
+    border: 7px solid #1d1d1b;
+    z-index: 100;
+    display: block;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.half-ball {
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 50px;
+    bottom: 0;
+    z-index: 0;
+    position: absolute;
+    background-color: white;
+    border-radius: 0 0 45px 45px;
+    width: 90px;
+    height: 45px;
+}
+
+.half-ball-top {
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: -50px;
+    bottom: 0;
+    z-index: 0;
+    position: absolute;
+    background-color: #dd2120;
+    border-radius: 90px 90px 0 0;
+    width: 90px;
+    height: 45px;
+}
+
+.horizon {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    border-radius: 0px;
+    width: 100px;
+    height: 10px;
+    background-color: #1d1d1b;
+    z-index: 3;
+}
+
+.big-button {
+    z-index: 4;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 3px solid #1d1d1b;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: white;
+}
+
+.small-button {
+    z-index: 5;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 3px solid #1d1d1b;
+    position: absolute;
+    height: 19px;
+    width: 19px;
+    background-color: white;
+}
+
+@keyframes loading {
+    0% { transform: translate(0, 0) rotate(0); }
+    25% { transform: translate(-8px, 0) rotate(-18deg); }
+    33% { transform: translate(8px, 0) rotate(18deg); }
+    50% { transform: translate(-8px, 0) rotate(-12deg); }
+    60% { transform: translate(8px, 0) rotate(18deg); }
+    100% { transform: translate(0, 0) rotate(0); }
+}
+
+
+/* Oculta barra de herramientas de Dash */
+.modebar{
+      display: none !important;
+}
+
+
+
+/* Add transparency to the dropdown elements */
+.dash-dropdown .Select-control {
+    background-color: rgba(240, 240, 240, 0.5) !important;
+    border: 0px solid rgba(200, 200, 200, 0.8) !important;
+}
+
+.dash-dropdown .Select-menu-outer {
+    background-color: rgba(240, 240, 240, 0.8) !important;
+    border: 0px solid rgba(200, 200, 200, 0.8) !important;
+}
+
+.dash-dropdown .Select-option {
+    background-color: rgba(240, 240, 240, 0.8) !important;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.8) !important;
+}
+
+
+/* Shine effect */
+@keyframes shine {
+    0%, 10% {
+        background-position: -1000px;
+    }
+    20% {
+        background-position: top left;
+    }
+    90% {
+        background-position: top right;
+    }
+    100% {
+        background-position: 1000px;
+    }
+}
+
+.shine-effect {
+    position: relative;
+    font-size: 3em;
+    font-weight: bold;
+    color: #343a40; /* Color base negro */
+}
+
+.shine-effect::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(-40deg, transparent 0%, transparent 40%, #5D6D7E 50%, transparent 60%, transparent 100%) 0 0 no-repeat;
+    background-size: 200px;
+    color: rgba(255, 255, 255, 0.3);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s infinite;
+    mix-blend-mode: lighten;
+}
