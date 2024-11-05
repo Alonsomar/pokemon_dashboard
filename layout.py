@@ -1,5 +1,6 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
+
 import pandas as pd
 from plot_utils import load_pokemon_data, create_pokebola_spinner, create_pokebola_sidebar
 
@@ -9,75 +10,94 @@ df = load_pokemon_data()
 
 # App Layout
 def create_layout(app):
-    return dbc.Container([
-        html.Div(id='p5-container', style={'position': 'fixed', 'top': 0, 'left': 0, 'width': '100%', 'height': '100%', 'zIndex': -1}),
-        dcc.Location(id='url', refresh=False),
-        dbc.Row([
-            dbc.Col([
-                dbc.Nav([
-                    create_pokebola_sidebar(),
-                    dbc.NavLink(
-                        [
-                            html.I(className="fas fa-spider me-2"),
-                            html.Span("Radar Chart")
+    return html.Div(
+        id='body-container',
+        children=[
+            dbc.Container([
+                dcc.Store(id='theme-store', storage_type='local'),
+                html.Button(
+                    html.I(className="fas fa-moon"),
+                    id='theme-switch',
+                    className='theme-switch'
+                ),
+                html.Div(id='p5-container', style={'position': 'fixed', 'top': 0, 'left': 0, 'width': '100%', 'height': '100%', 'zIndex': -1}),
+                dcc.Location(id='url', refresh=False),
+                dbc.Row([
+                    dbc.Col([
+                        dbc.Nav([
+                            create_pokebola_sidebar(),
+                            dbc.NavLink(
+                                [
+                                    html.I(className="fas fa-spider me-2"),
+                                    html.Span("Radar Chart")
+                                ],
+                                href="/",
+                                id="link-radar-chart",
+                                active="exact"
+                            ),
+                            dbc.NavLink(
+                                [
+                                    html.I(className="fas fa-chart-bar me-2"),
+                                    html.Span("Stats Bar Chart")
+                                ],
+                                href="/bar-chart",
+                                id="link-bar-chart",
+                                active="exact"
+                            ),
+                            dbc.NavLink(
+                                [
+                                    html.I(className="fas fa-chart-line me-2"),
+                                    html.Span("Scatter Plot")
+                                ],
+                                href="/scatter-plot",
+                                id="link-scatter-plot",
+                                active="exact"
+                            ),
+                            dbc.NavLink(
+                                [
+                                    html.I(className="fas fa-th me-2"),
+                                    html.Span("Heatmap")
+                                ],
+                                href="/heatmap",
+                                id="link-heatmap",
+                                active="exact"
+                            ),
+                            dbc.NavLink(
+                                [
+                                    html.I(className="fas fa-box me-2"),
+                                    html.Span("Box Plot")
+                                ],
+                                href="/box-plot",
+                                id="link-box-plot",
+                                active="exact"
+                            )
                         ],
-                        href="/",
-                        id="link-radar-chart",
-                        active="exact"
-                    ),
-                    dbc.NavLink(
-                        [
-                            html.I(className="fas fa-chart-bar me-2"),
-                            html.Span("Stats Bar Chart")
-                        ],
-                        href="/bar-chart",
-                        id="link-bar-chart",
-                        active="exact"
-                    ),
-                    dbc.NavLink(
-                        [
-                            html.I(className="fas fa-chart-line me-2"),
-                            html.Span("Scatter Plot")
-                        ],
-                        href="/scatter-plot",
-                        id="link-scatter-plot",
-                        active="exact"
-                    ),
-                    dbc.NavLink(
-                        [
-                            html.I(className="fas fa-th me-2"),
-                            html.Span("Heatmap")
-                        ],
-                        href="/heatmap",
-                        id="link-heatmap",
-                        active="exact"
-                    ),
-                    dbc.NavLink(
-                        [
-                            html.I(className="fas fa-box me-2"),
-                            html.Span("Box Plot")
-                        ],
-                        href="/box-plot",
-                        id="link-box-plot",
-                        active="exact"
-                    )
-                ],
-                vertical=True,
-                pills=True,
-                className="sidebar")
-            ], width=2),
-            dbc.Col([
-                html.H1('Pokémon Dashboard', className='text-center shine-effect', **{'data-text': 'Pokémon Dashboard'}),
-                html.Div(id='page-content', className="content")
-            ], width=10)
-        ], className='row-centered', style={'marginTop': '20px'}),
-        dbc.Row([
-            dbc.Col([
-                html.Div("by Alonso Valdés",
-                         style={'fontSize': '10px', 'color': 'white', 'marginBottom': '20px'})
-            ])
-        ])
-    ], fluid=True)
+                        vertical=True,
+                        pills=True,
+                        className="sidebar")
+                    ], width=2),
+                    dbc.Col([
+                        html.H1('Pokémon Dashboard', 
+                                className='text-center shine-effect gradient-text', 
+                                style={
+                                    'fontSize': '3.5rem',
+                                    'fontWeight': '700',
+                                    'letterSpacing': '2px',
+                                    'marginBottom': '2rem'
+                                }),
+                        html.Div(id='page-content', className="content")
+                    ], width=10)
+                ], className='row-centered', style={'marginTop': '20px'}),
+                dbc.Row([
+                    dbc.Col([
+                        html.Div("by Alonso Valdés",
+                                style={'fontSize': '10px', 'color': 'white', 'marginBottom': '20px'})
+                    ])
+                ])
+            ], fluid=True)
+        ],
+        **{'data-theme': 'light'}
+    )
 
 
 def render_radar_chart_layout():

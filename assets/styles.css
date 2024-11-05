@@ -4,9 +4,28 @@
 
 
 :root {
-    --main-bg-color: rgba(240, 240, 240, 0.3);
-    --main-text-color: #343a40;
-    --hover-color: rgba(240, 240, 240, 0.4);
+    --main-bg-color: rgba(248, 249, 250, 0.95);
+    --main-text-color: #2C3E50;
+    --hover-color: rgba(236, 240, 241, 0.9);
+    --card-bg-color: rgba(255, 255, 255, 0.95);
+    --accent-color: #3498DB;
+    --secondary-color: #E74C3C;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --card-bg-light: rgba(255, 255, 255, 0.95);
+    --card-bg-dark: rgba(34, 47, 62, 0.95);
+    --text-light: #2C3E50;
+    --text-dark: #ECF0F1;
+}
+
+[data-theme='dark'] {
+    --main-bg-color: rgba(44, 62, 80, 0.95);
+    --main-text-color: #ECF0F1;
+    --hover-color: rgba(52, 73, 94, 0.9);
+    --card-bg-color: rgba(34, 47, 62, 0.95);
+    --accent-color: #3498DB;
+    --secondary-color: #E74C3C;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* background-color: #f8f9fa;
@@ -85,9 +104,15 @@ h4 {
 }
 
 .graph-card {
-    border: none;  /* Remove border */
-    box-shadow: none;  /* Remove shadow if any */
-    background-color: rgba(240,240,240,0.3);  /* Background with transparency */
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    transition: all var(--transition-speed);
+    backdrop-filter: blur(10px);
+}
+
+.graph-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
 .graph-card-header {
@@ -119,7 +144,9 @@ h4 {
 
 
 .sidebar {
-    background-color: rgba(240,240,240,0.4);
+    background: linear-gradient(180deg, var(--main-bg-color) 0%, var(--card-bg-color) 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     padding: 20px;
     height: 100vh;
     position: fixed;
@@ -377,18 +404,25 @@ h4 {
 
 /* Add transparency to the dropdown elements */
 .dash-dropdown .Select-control {
-    background-color: rgba(240, 240, 240, 0.5) !important;
-    border: 0px solid rgba(200, 200, 200, 0.8) !important;
+    border-radius: 10px;
+    border: 2px solid var(--accent-color) !important;
+    transition: all var(--transition-speed);
+}
+
+.dash-dropdown .Select-control:hover {
+    border-color: var(--secondary-color) !important;
 }
 
 .dash-dropdown .Select-menu-outer {
-    background-color: rgba(240, 240, 240, 0.8) !important;
+    background-color: var(--card-bg-color) !important;
     border: 0px solid rgba(200, 200, 200, 0.8) !important;
+    color: var(--main-text-color) !important;
 }
 
 .dash-dropdown .Select-option {
-    background-color: rgba(240, 240, 240, 0.8) !important;
+    background-color: var(--card-bg-color) !important;
     border-bottom: 1px solid rgba(200, 200, 200, 0.8) !important;
+    color: var(--main-text-color) !important;
 }
 
 
@@ -431,4 +465,107 @@ h4 {
     -webkit-text-fill-color: transparent;
     animation: shine 5s infinite;
     mix-blend-mode: lighten;
+}
+
+/* Añadir después de las variables root existentes */
+[data-theme='dark'] {
+    --main-bg-color: rgba(30, 30, 30, 0.3);
+    --main-text-color: #ffffff;
+    --hover-color: rgba(50, 50, 50, 0.4);
+    --card-bg-color: rgba(40, 40, 40, 0.3);
+    --tooltip-bg-color: rgba(60, 60, 60, 0.9);
+}
+
+[data-theme='light'] {
+    --main-bg-color: rgba(240, 240, 240, 0.3);
+    --main-text-color: #343a40;
+    --hover-color: rgba(240, 240, 240, 0.4);
+    --card-bg-color: rgba(240, 240, 240, 0.3);
+    --tooltip-bg-color: rgba(52, 58, 64, 0.9);
+}
+
+/* Añadir el estilo para el botón de tema */
+.theme-switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--card-bg-color);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--main-text-color);
+}
+
+.theme-switch:hover {
+    transform: scale(1.1);
+    background: var(--hover-color);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animation-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Gradiente para título */
+.gradient-text {
+    background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Media queries para mejor responsividad */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .content {
+        margin-left: 0;
+        padding: 10px;
+    }
+    
+    .graph-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Aplicar temas basados en el atributo data-theme */
+[data-theme='light'] .graph-card {
+    background-color: var(--card-bg-light);
+    color: var(--text-light);
+}
+
+[data-theme='dark'] .graph-card {
+    background-color: var(--card-bg-dark);
+    color: var(--text-dark);
+}
+
+[data-theme='light'] .sidebar {
+    background: linear-gradient(180deg, rgba(248, 249, 250, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+}
+
+[data-theme='dark'] .sidebar {
+    background: linear-gradient(180deg, rgba(44, 62, 80, 0.95) 0%, rgba(34, 47, 62, 0.95) 100%);
+}
+
+/* Añadir transiciones suaves */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.graph-card, .sidebar, .theme-switch {
+    transition: all 0.3s ease;
 }

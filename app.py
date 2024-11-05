@@ -2,7 +2,7 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import pandas as pd
 import plotly.graph_objects as go
 from layout import create_layout, render_radar_chart_layout, render_scatter_plot_layout, render_box_plot_layout, render_stats_bar_chart
@@ -24,28 +24,60 @@ app.title = "Pokemon Dashboard"
 # Load Pokémon data
 df = load_pokemon_data()
 
-# Custom chart layout
+# Definir el layout base
 chart_layout = dict(
-    font=dict(family='Montserrat, sans-serif'),
-    title_font=dict(family='Montserrat, sans-serif'),
-    template='ggplot2',
-    plot_bgcolor='rgba(240,240,240,0.4)',
+    font=dict(
+        family='Montserrat, sans-serif',
+        size=12
+    ),
+    title_font=dict(
+        family='Montserrat, sans-serif',
+        size=16
+    ),
+    plot_bgcolor='rgba(0,0,0,0)',
     paper_bgcolor='rgba(0,0,0,0)',
     legend=dict(
         orientation="h",
         yanchor="bottom",
-        y=1.03,
-        xanchor="center",
-        x=0.5
+        y=1.02,
+        xanchor="right",
+        x=1,
+        bgcolor='rgba(0,0,0,0)',
+        font=dict(size=10)
     ),
-    margin=dict(l=20, r=20, t=30, b=20),
+    margin=dict(l=40, r=40, t=40, b=40),
     hoverlabel=dict(
-            font=dict(
-                family='Montserrat, sans-serif',
-                size=12
-            )
+        font=dict(
+            family='Montserrat, sans-serif',
+            size=12
+        )
     )
 )
+
+# Función helper para obtener el layout actualizado según el tema
+def get_themed_layout(theme_data):
+    layout = chart_layout.copy()
+    is_dark = theme_data and theme_data.get('theme') == 'dark'
+    
+    layout.update(
+        template='plotly_dark' if is_dark else 'plotly_white',
+        title_font_color='white' if is_dark else '#2C3E50',
+    )
+    return layout
+
+# Callback para actualizar el estilo de las gráficas cuando cambia el tema
+@app.callback(
+    Output('your-graph-id', 'figure'),  # Reemplaza 'your-graph-id' con el ID de tu gráfica
+    [Input('theme-store', 'data')],
+    [State('your-graph-id', 'figure')]  # Reemplaza 'your-graph-id' con el ID de tu gráfica
+)
+def update_graph_theme(theme_data, current_figure):
+    if current_figure is None:
+        return {}
+    
+    fig = go.Figure(current_figure)
+    fig.update_layout(get_themed_layout(theme_data))
+    return fig
 
 # Funtion to parse stats with icons and image
 def get_pokemon_info(pokemon_data):
@@ -75,42 +107,70 @@ def hex_to_rgba(hex_color, opacity):
     r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
     return f'rgba({r}, {g}, {b}, {opacity})'
 
-# Heatmap figure
-def render_heatmap():
+# Definir el callback fuera de la función render_heatmap
+@app.callback(
+    Output('heatmap-graph', 'figure'),
+    [Input('theme-store', 'data')]
+)
+def update_heatmap(theme_data):
     correlation_matrix = df[['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed']].corr()
+    
     fig_heatmap = go.Figure(data=go.Heatmap(
         z=correlation_matrix.values,
         x=correlation_matrix.columns,
         y=correlation_matrix.columns,
-        colorscale='Blues',
+        colorscale='RdBu',
         zmin=-1, zmax=1,
         text=correlation_matrix.values.round(2),
-        hoverinfo='text',
+        texttemplate='%{text}',
+        textfont={"size": 10},
+        hoverongaps=False,
+        hovertemplate='%{x} vs %{y}<br>Correlation: %{z:.2f}<extra></extra>'
     ))
 
-    # Add annotations
+    # Añadir anotaciones con mejor contraste
     annotations = []
     for i, row in enumerate(correlation_matrix.values):
         for j, value in enumerate(row):
+            text_color = "white" if abs(value) > 0.4 else "black"
             annotations.append(
                 dict(
                     x=correlation_matrix.columns[j],
                     y=correlation_matrix.columns[i],
                     text=str(round(value, 2)),
                     showarrow=False,
-                    font=dict(color="black" if value < 0.5 else "white"),
+                    font=dict(
+                        color=text_color,
+                        size=10
+                    )
                 )
             )
 
-    fig_heatmap.update_layout(
-        xaxis={'side': 'bottom'},
-        yaxis_tickmode='array',
-        yaxis_tickvals=list(range(len(correlation_matrix.columns))),
-        yaxis_ticktext=correlation_matrix.columns,
+    # Obtener el layout temático base
+    themed_layout = get_themed_layout(theme_data)
+    
+    # Actualizar el layout con configuraciones específicas del heatmap
+    themed_layout.update(
+        title='Correlation Heatmap of Pokémon Stats',
+        xaxis=dict(
+            side='bottom',
+            tickangle=45,
+            tickfont=dict(size=10)
+        ),
+        yaxis=dict(
+            tickfont=dict(size=10)
+        ),
         annotations=annotations,
-        **chart_layout
+        height=600,
+        margin=dict(l=60, r=30, t=50, b=80)
     )
+    
+    fig_heatmap.update_layout(themed_layout)
+    
+    return fig_heatmap
 
+# Función de renderizado separada
+def render_heatmap():
     return dbc.Container([
         dbc.Row([
             dbc.Col([
@@ -119,7 +179,11 @@ def render_heatmap():
                     dbc.CardBody([
                         dcc.Loading(
                             children=[
-                                dcc.Graph(id='heatmap-graph', figure=fig_heatmap, className='graph-container', style={'height': '520px'})
+                                dcc.Graph(
+                                    id='heatmap-graph',
+                                    className='graph-container',
+                                    style={'height': '520px'}
+                                )
                             ],
                             custom_spinner=create_pokebola_spinner(),
                             fullscreen=True,
@@ -151,9 +215,10 @@ def display_page(pathname):
 # Callback to
 @app.callback(
     Output('stats-graph', 'figure'),
-    [Input('pokemon-dropdown', 'value')]
+    [Input('pokemon-dropdown', 'value'),
+     Input('theme-store', 'data')]
 )
-def update_bar_chart(selected_pokemon):
+def update_bar_chart(selected_pokemon, theme_data):
     if not selected_pokemon:
         return go.Figure()
 
@@ -172,7 +237,7 @@ def update_bar_chart(selected_pokemon):
         barmode='group',
         xaxis_title='Stats',
         yaxis_title='Values',
-        **chart_layout
+        **get_themed_layout(theme_data)
     )
 
     return fig
@@ -187,9 +252,10 @@ def update_bar_chart(selected_pokemon):
      Output('pokemon-info-2', 'style'),
      Output('radar-graph-comparison', 'figure')],
     [Input('pokemon-dropdown-1', 'value'),
-     Input('pokemon-dropdown-2', 'value')]
+     Input('pokemon-dropdown-2', 'value'),
+     Input('theme-store', 'data')]
 )
-def update_radar_chart(pokemon1, pokemon2):
+def update_radar_chart(pokemon1, pokemon2, theme_data):
     pokemon_data_1 = df[df['#'] == pokemon1].iloc[0]
     pokemon_data_2 = df[df['#'] == pokemon2].iloc[0]
 
@@ -215,7 +281,7 @@ def update_radar_chart(pokemon1, pokemon2):
         theta=['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed', 'HP'],
         mode='lines+markers',
         name=pokemon_data_1['Name'],
-        line_color= get_type_color(pokemon_data_1['Type 1'])
+        line_color=get_type_color(pokemon_data_1['Type 1'])
     ))
     fig_radar.add_trace(go.Scatterpolar(
         r=[pokemon_data_2['HP'], pokemon_data_2['Attack'], pokemon_data_2['Defense'],
@@ -225,15 +291,15 @@ def update_radar_chart(pokemon1, pokemon2):
         name=pokemon_data_2['Name'],
         line=dict(color=get_type_color(pokemon_data_2['Type 1']), dash=line_dash_2)
     ))
-    fig_radar.update_layout(
+
+    themed_layout = get_themed_layout(theme_data)
+    themed_layout.update(
         polar=dict(
             bgcolor="rgba(240, 240, 240, 0.3)",
             radialaxis=dict(visible=True, range=[0, max(100, max_stat)])
-        ),
-        showlegend=True,
-        **chart_layout,
-
+        )
     )
+    fig_radar.update_layout(**themed_layout)
 
     return info_1, image_src_1, style_1, info_2, image_src_2, style_2, fig_radar
 
@@ -242,9 +308,10 @@ def update_radar_chart(pokemon1, pokemon2):
     Output('scatter-plot', 'figure'),
     [Input('scatter-xaxis', 'value'),
      Input('scatter-yaxis', 'value'),
-     Input('pokemon-dropdown', 'value')]
+     Input('pokemon-dropdown', 'value'),
+     Input('theme-store', 'data')]
 )
-def update_scatter_plot(xaxis, yaxis, selected_pokemon):
+def update_scatter_plot(xaxis, yaxis, selected_pokemon, theme_data):
     fig = go.Figure()
 
     for pokemon_type in df['Type 1'].unique():
@@ -276,7 +343,7 @@ def update_scatter_plot(xaxis, yaxis, selected_pokemon):
         xaxis_title=xaxis,
         yaxis_title=yaxis,
         showlegend=True,
-        **chart_layout
+        **get_themed_layout(theme_data)
     )
 
     return fig
@@ -284,9 +351,10 @@ def update_scatter_plot(xaxis, yaxis, selected_pokemon):
 
 @app.callback(
     Output('box-plot', 'figure'),
-    [Input('url', 'pathname')]
+    [Input('url', 'pathname'),
+     Input('theme-store', 'data')]
 )
-def update_violin_plot(pathname):
+def update_violin_plot(pathname, theme_data):
     if pathname != '/box-plot':
         return go.Figure()
 
@@ -295,7 +363,7 @@ def update_violin_plot(pathname):
         cols=1,
         shared_xaxes=True,
         subplot_titles=['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed'],
-        vertical_spacing=0.03  # Reduce vertical spacing
+        vertical_spacing=0.03
     )
 
     stats = ['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed']
@@ -314,15 +382,40 @@ def update_violin_plot(pathname):
             )
             fig.add_trace(violin_trace, row=i, col=1)
 
-    fig.update_layout(
-        height=1200,
-        showlegend=False,
-        **chart_layout
-    )
+    themed_layout = get_themed_layout(theme_data)
+    themed_layout.update(height=1200)
+    fig.update_layout(**themed_layout)
 
     return fig
 
 
+# Añadir este callback después de los existentes
+@app.callback(
+    [Output('theme-store', 'data'),
+     Output('theme-switch', 'children'),
+     Output('body-container', 'data-theme')],
+    [Input('theme-switch', 'n_clicks')],
+    [State('theme-store', 'data')]
+)
+def toggle_theme(n_clicks, current_theme):
+    if n_clicks is None:
+        return {'theme': 'light'}, html.I(className="fas fa-moon"), 'light'
+    
+    if current_theme is None or current_theme.get('theme') == 'light':
+        return {'theme': 'dark'}, html.I(className="fas fa-sun"), 'dark'
+    
+    return {'theme': 'light'}, html.I(className="fas fa-moon"), 'light'
+
+# Añadir este callback para aplicar el tema
+@app.callback(
+    Output('p5-container', 'className'),
+    [Input('theme-store', 'data')]
+)
+def apply_theme(theme_data):
+    if theme_data is None or theme_data.get('theme') == 'light':
+        return 'light-theme'
+    return 'dark-theme'
+
 # Run the server
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', port=8050, debug=False)
+    app.run_server(host='0.0.0.0', port=8050, debug=True)

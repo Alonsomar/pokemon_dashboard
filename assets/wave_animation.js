@@ -16,7 +16,14 @@ let sketch = function(p) {
     };
 
     p.draw = function() {
-        p.background(210, 20, 95);
+        let theme = document.body.getAttribute('data-theme') || 'light';
+        
+        if (theme === 'dark') {
+            p.background(210, 20, 15);
+        } else {
+            p.background(210, 20, 95);
+        }
+        
         for (let wave of waves) {
             wave.display();
             wave.move();
