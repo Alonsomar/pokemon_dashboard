@@ -16,17 +16,29 @@ let sketch = function(p) {
     };
 
     p.draw = function() {
-        let theme = document.body.getAttribute('data-theme') || 'light';
+        let container = document.getElementById('p5-container');
+        let theme = container ? container.getAttribute('data-theme') : 'light';
         
         if (theme === 'dark') {
-            p.background(210, 20, 15);
+            p.background(210, 20, 15, 90);  // Darker background with some transparency
+            for (let wave of waves) {
+                // Cool blue-purple palette for dark theme
+                wave.hue = p.map(wave.index, 0, numWaves, 220, 260);
+                wave.saturation = 70;
+                wave.brightness = 80;
+                wave.display();
+                wave.move();
+            }
         } else {
-            p.background(210, 20, 95);
-        }
-        
-        for (let wave of waves) {
-            wave.display();
-            wave.move();
+            p.background(210, 20, 95, 90);  // Light background with some transparency
+            for (let wave of waves) {
+                // Light blue palette for light theme
+                wave.hue = p.map(wave.index, 0, numWaves, 190, 220);
+                wave.saturation = 60;
+                wave.brightness = 90;
+                wave.display();
+                wave.move();
+            }
         }
     };
 
@@ -55,6 +67,8 @@ let sketch = function(p) {
             this.wavelength = wavelength;
             this.speed = speed;
             this.hue = hue;
+            this.saturation = 60;
+            this.brightness = 90;
             this.index = index;
             this.offset = 0;
         }
@@ -64,7 +78,7 @@ let sketch = function(p) {
         }
 
         display() {
-            this.p.fill(this.hue, 60, 90, 10 + this.index * 2);
+            this.p.fill(this.hue, this.saturation, this.brightness, 10 + this.index * 2);
             this.p.noStroke();
             this.p.beginShape();
             for (let x = 0; x <= this.p.width; x += 10) {

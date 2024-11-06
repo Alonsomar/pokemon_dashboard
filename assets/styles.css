@@ -12,20 +12,11 @@
     --secondary-color: #E74C3C;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition-speed: 0.3s;
-    --card-bg-light: rgba(255, 255, 255, 0.95);
-    --card-bg-dark: rgba(34, 47, 62, 0.95);
+    --card-bg-light: rgba(255, 255, 255, 0.25);
+    --card-bg-dark: rgba(34, 47, 62, 0.25);
     --text-light: #2C3E50;
     --text-dark: #ECF0F1;
-}
-
-[data-theme='dark'] {
-    --main-bg-color: rgba(44, 62, 80, 0.95);
-    --main-text-color: #ECF0F1;
-    --hover-color: rgba(52, 73, 94, 0.9);
-    --card-bg-color: rgba(34, 47, 62, 0.95);
-    --accent-color: #3498DB;
-    --secondary-color: #E74C3C;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    --sidebar-bg-color: rgba(255, 255, 255, 0.25);
 }
 
 /* background-color: #f8f9fa;
@@ -63,8 +54,20 @@ h4 {
 
 .pokemon-info {
     text-align: center;
-    color:  var(--main-text-color);
+    color: var(--main-text-color);
     margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    transition: all var(--transition-speed);
+    padding: 15px;
+    min-width: 200px;
+}
+
+.pokemon-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
 .pokemon-info p {
@@ -84,10 +87,12 @@ h4 {
 .pokemon-details {
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 15px;
     background-color: rgba(240,240,240,0);
-    border: none;  /* Remove border */
-    box-shadow: none;  /* Remove shadow if any */
+    border: none;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .graph-container {
@@ -144,9 +149,10 @@ h4 {
 
 
 .sidebar {
-    background: linear-gradient(180deg, var(--main-bg-color) 0%, var(--card-bg-color) 100%);
+    background: var(--sidebar-bg-color);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 20px;
     height: 100vh;
     position: fixed;
@@ -155,11 +161,12 @@ h4 {
     z-index: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: all 0.8s;
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 220px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -181,17 +188,21 @@ h4 {
 }
 
 .sidebar .nav-link:hover {
-    background-color: rgba(240,240,240,0.4);
-    color: #495057;
+    background-color: var(--hover-color);
+    color: var(--main-text-color);
     font-weight: bold;
     transform: scale(1.05);
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .sidebar .nav-link.active {
-    background-color: rgba(240,240,240,0.4);
-    color: #495057;
+    background-color: var(--hover-color);
+    color: var(--main-text-color);
     font-weight: bold;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 [data-tooltip] {
@@ -404,25 +415,84 @@ h4 {
 
 /* Add transparency to the dropdown elements */
 .dash-dropdown .Select-control {
-    border-radius: 10px;
-    border: 2px solid var(--accent-color) !important;
-    transition: all var(--transition-speed);
+    background-color: var(--card-bg-color) !important;
+    border: none !important;
+    border-radius: 15px !important;
+    padding: 8px 12px !important;
+    box-shadow: var(--card-shadow) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    transition: all var(--transition-speed) !important;
+    min-height: 38px !important;
 }
 
 .dash-dropdown .Select-control:hover {
-    border-color: var(--secondary-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 .dash-dropdown .Select-menu-outer {
     background-color: var(--card-bg-color) !important;
-    border: 0px solid rgba(200, 200, 200, 0.8) !important;
-    color: var(--main-text-color) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    margin-top: 8px !important;
+    box-shadow: var(--card-shadow) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 8px 0 !important;
 }
 
 .dash-dropdown .Select-option {
-    background-color: var(--card-bg-color) !important;
-    border-bottom: 1px solid rgba(200, 200, 200, 0.8) !important;
+    background-color: transparent !important;
     color: var(--main-text-color) !important;
+    padding: 12px 16px !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.dash-dropdown .Select-option.is-focused {
+    background-color: var(--hover-color) !important;
+    color: var(--main-text-color) !important;
+}
+
+.dash-dropdown .Select-value {
+    color: var(--main-text-color) !important;
+    padding: 2px 8px !important;
+}
+
+.dash-dropdown .Select-value-label {
+    color: var(--main-text-color) !important;
+}
+
+.dash-dropdown .Select-arrow-zone {
+    color: var(--main-text-color) !important;
+}
+
+/* Estilos específicos para tema oscuro */
+[data-theme='dark'] .dash-dropdown .Select-control {
+    background-color: var(--card-bg-dark) !important;
+}
+
+[data-theme='dark'] .dash-dropdown .Select-menu-outer {
+    background-color: var(--card-bg-dark) !important;
+}
+
+/* Scrollbar personalizado para el menú dropdown */
+.dash-dropdown .Select-menu-outer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dash-dropdown .Select-menu-outer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dash-dropdown .Select-menu-outer::-webkit-scrollbar-thumb {
+    background: var(--hover-color);
+    border-radius: 4px;
+}
+
+.dash-dropdown .Select-menu-outer::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
 }
 
 
@@ -474,6 +544,7 @@ h4 {
     --hover-color: rgba(50, 50, 50, 0.4);
     --card-bg-color: rgba(40, 40, 40, 0.3);
     --tooltip-bg-color: rgba(60, 60, 60, 0.9);
+    --sidebar-bg-color: rgba(34, 47, 62, 0.25);
 }
 
 [data-theme='light'] {
@@ -482,6 +553,7 @@ h4 {
     --hover-color: rgba(240, 240, 240, 0.4);
     --card-bg-color: rgba(240, 240, 240, 0.3);
     --tooltip-bg-color: rgba(52, 58, 64, 0.9);
+    --sidebar-bg-color: rgba(255, 255, 255, 0.25);
 }
 
 /* Añadir el estilo para el botón de tema */
@@ -554,11 +626,15 @@ h4 {
 }
 
 [data-theme='light'] .sidebar {
-    background: linear-gradient(180deg, rgba(248, 249, 250, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 [data-theme='dark'] .sidebar {
-    background: linear-gradient(180deg, rgba(44, 62, 80, 0.95) 0%, rgba(34, 47, 62, 0.95) 100%);
+    background: rgba(34, 47, 62, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* Añadir transiciones suaves */
@@ -568,4 +644,127 @@ h4 {
 
 .graph-card, .sidebar, .theme-switch {
     transition: all 0.3s ease;
+}
+
+/* Estilos para inputs en modo oscuro */
+[data-theme='dark'] input {
+    color: var(--main-text-color) !important;
+}
+
+[data-theme='dark'] .dash-dropdown .Select-input > input {
+    color: var(--main-text-color) !important;
+}
+
+[data-theme='dark'] .Select-placeholder {
+    color: var(--main-text-color) !important;
+    opacity: 0.7;
+}
+
+[data-theme='dark'] .Select.is-focused > .Select-control {
+    color: var(--main-text-color) !important;
+}
+
+[data-theme='dark'] .Select-value-label {
+    color: var(--main-text-color) !important;
+}
+
+[data-theme='dark'] .Select-menu-outer {
+    color: var(--main-text-color) !important;
+}
+
+/* Estilos para títulos de tarjetas */
+.card-header {
+    color: var(--main-text-color);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.2em;
+    text-align: center;
+    padding: 1rem;
+    background: transparent;
+    border-bottom: none;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Contenedor de información del Pokémon */
+.pokemon-container {
+    background: var(--card-bg-color);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all var(--transition-speed);
+}
+
+.pokemon-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para labels de dropdowns */
+.dropdown-label {
+    color: var(--main-text-color);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Estilos para el placeholder del dropdown */
+.Select-placeholder {
+    color: var(--main-text-color) !important;
+    opacity: 0.7;
+}
+
+/* Estilos para el valor seleccionado */
+.Select-value {
+    background-color: transparent !important;
+}
+
+/* Estilos específicos para tema oscuro */
+[data-theme='dark'] .card-header {
+    color: var(--main-text-color);
+}
+
+[data-theme='dark'] .dropdown-label {
+    color: var(--main-text-color);
+}
+
+[data-theme='dark'] .Select-value-label {
+    color: var(--main-text-color) !important;
+}
+
+[data-theme='dark'] .Select-placeholder {
+    color: var(--main-text-color) !important;
+    opacity: 0.7;
+}
+
+.author-container {
+    padding: 15px;
+    margin-top: 20px;
+    border-top: 1px solid rgba(175, 175, 175, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.9em;
+    color: var(--main-text-color);
+}
+
+.author-name {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.github-link {
+    color: var(--main-text-color);
+    transition: all 0.3s ease;
+    font-size: 1.2em;
+}
+
+.github-link:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
 }

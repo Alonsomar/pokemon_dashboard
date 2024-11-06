@@ -262,11 +262,27 @@ def update_radar_chart(pokemon1, pokemon2, theme_data):
     info_1, image_src_1 = get_pokemon_info(pokemon_data_1)
     info_2, image_src_2 = get_pokemon_info(pokemon_data_2)
 
-    color_1 = hex_to_rgba(get_type_color(pokemon_data_1['Type 1']), 0.4)
-    color_2 = hex_to_rgba(get_type_color(pokemon_data_2['Type 1']), 0.4)
+    color_1 = hex_to_rgba(get_type_color(pokemon_data_1['Type 1']), 0.3)
+    color_2 = hex_to_rgba(get_type_color(pokemon_data_2['Type 1']), 0.3)
 
-    style_1 = {'backgroundColor': color_1, 'borderRadius': '10px', 'padding': '10px'}
-    style_2 = {'backgroundColor': color_2, 'borderRadius': '10px', 'padding': '10px'}
+    style_1 = {
+        'backgroundColor': color_1, 
+        'borderRadius': '15px', 
+        'padding': '15px',
+        'boxShadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
+        'backdropFilter': 'blur(10px)',
+        'WebkitBackdropFilter': 'blur(10px)',
+        'transition': 'all 0.3s ease'
+    }
+    style_2 = {
+        'backgroundColor': color_2, 
+        'borderRadius': '15px', 
+        'padding': '15px',
+        'boxShadow': '0 4px 6px rgba(0, 0, 0, 0.1)',
+        'backdropFilter': 'blur(10px)',
+        'WebkitBackdropFilter': 'blur(10px)',
+        'transition': 'all 0.3s ease'
+    }
 
     max_stat = max(pokemon_data_1[['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed']].max(),
                    pokemon_data_2[['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed']].max())
@@ -393,28 +409,21 @@ def update_violin_plot(pathname, theme_data):
 @app.callback(
     [Output('theme-store', 'data'),
      Output('theme-switch', 'children'),
-     Output('body-container', 'data-theme')],
+     Output('body-container', 'data-theme'),
+     Output('p5-container', 'data-theme')],
     [Input('theme-switch', 'n_clicks')],
     [State('theme-store', 'data')]
 )
 def toggle_theme(n_clicks, current_theme):
     if n_clicks is None:
-        return {'theme': 'light'}, html.I(className="fas fa-moon"), 'light'
+        return {'theme': 'light'}, html.I(className="fas fa-moon"), 'light', 'light'
     
     if current_theme is None or current_theme.get('theme') == 'light':
-        return {'theme': 'dark'}, html.I(className="fas fa-sun"), 'dark'
+        return {'theme': 'dark'}, html.I(className="fas fa-sun"), 'dark', 'dark'
     
-    return {'theme': 'light'}, html.I(className="fas fa-moon"), 'light'
+    return {'theme': 'light'}, html.I(className="fas fa-moon"), 'light', 'light'
 
 # Añadir este callback para aplicar el tema
-@app.callback(
-    Output('p5-container', 'className'),
-    [Input('theme-store', 'data')]
-)
-def apply_theme(theme_data):
-    if theme_data is None or theme_data.get('theme') == 'light':
-        return 'light-theme'
-    return 'dark-theme'
 
 # Run the server
 if __name__ == '__main__':

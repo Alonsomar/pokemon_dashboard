@@ -70,7 +70,16 @@ def create_layout(app):
                                 href="/box-plot",
                                 id="link-box-plot",
                                 active="exact"
-                            )
+                            ),
+                            html.Div([
+                                html.Span("Alonso Valdés ", className="author-name"),
+                                html.A(
+                                    html.I(className="fab fa-github"),
+                                    href="https://github.com/Alonsomar/pokemon_dashboard",
+                                    target="_blank",
+                                    className="github-link"
+                                )
+                            ], className="author-container"),
                         ],
                         vertical=True,
                         pills=True,
@@ -87,13 +96,7 @@ def create_layout(app):
                                 }),
                         html.Div(id='page-content', className="content")
                     ], width=10)
-                ], className='row-centered', style={'marginTop': '20px'}),
-                dbc.Row([
-                    dbc.Col([
-                        html.Div("by Alonso Valdés",
-                                style={'fontSize': '10px', 'color': 'white', 'marginBottom': '20px'})
-                    ])
-                ])
+                ], className='row-centered', style={'marginTop': '20px'})
             ], fluid=True)
         ],
         **{'data-theme': 'light'}
