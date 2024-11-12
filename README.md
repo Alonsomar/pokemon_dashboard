@@ -3,6 +3,7 @@ _Alonso Valdés, Visualización Avanzada, UCM - Máster Data Science, Big Data &
 
 Este proyecto implementa una aplicación web usando Dash para visualización de datos.
 La app se utiliza para generar distintos gráficos y comparativas de estadísticas de pokemones.
+- [VISITA EL DASHBOARD](https://pokemon.alonsovaldes.com)
 
 ## Fuentes de información
 - [Imágenes de cada pokemon - Github](https://github.com/HybridShivam/Pokemon/tree/master)
