@@ -1,6 +1,19 @@
-version: '3'
+version: "3.8"
+
 services:
-  web:
-    build: .
+  pokemon_dashboard:
+    build: .  # Use el Dockerfile en el directorio actual
+    container_name: pokemon_dashboard
     ports:
-      - "8080:8050"
+      - "8050:8050"
+    restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    environment:
+      - TZ=Europe/Madrid
+    command: >
+      tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}
+    restart: unless-stopped
+
