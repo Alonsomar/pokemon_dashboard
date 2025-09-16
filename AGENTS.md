@@ -4,6 +4,7 @@
 - Python 3.12
 - Instala deps: `pip install -r requirements.txt -r requirements-dev.txt`
 - Tests: `pytest -q`
+- Tests UI (Dash): `pytest -q tests/test_app_ui_smoke.py`
 - Lint/Format: `ruff check . && ruff format .`
 
 ## Convenciones

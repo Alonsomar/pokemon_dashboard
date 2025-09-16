@@ -1,13 +1,20 @@
 # Imports
 import dash
 import dash_bootstrap_components as dbc
-from dash import dcc, html
-from dash.dependencies import Input, Output, State
 import pandas as pd
 import plotly.graph_objects as go
-from layout import create_layout, render_radar_chart_layout, render_scatter_plot_layout, render_box_plot_layout, render_stats_bar_chart
-from plot_utils import get_type_color, load_pokemon_data, create_pokebola_spinner, TYPE_ICONS
+from dash import dcc, html
+from dash.dependencies import Input, Output, State
 from plotly.subplots import make_subplots
+
+from layout import (
+    create_layout,
+    render_box_plot_layout,
+    render_radar_chart_layout,
+    render_scatter_plot_layout,
+    render_stats_bar_chart,
+)
+from plot_utils import TYPE_ICONS, create_pokebola_spinner, get_type_color, load_pokemon_data
 
 # Initialize the app
 app = dash.Dash(__name__,

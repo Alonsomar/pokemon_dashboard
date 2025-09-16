@@ -1,9 +1,7 @@
-from dash import dcc, html
 import dash_bootstrap_components as dbc
+from dash import dcc, html
 
-import pandas as pd
-from plot_utils import load_pokemon_data, create_pokebola_spinner, create_pokebola_sidebar
-
+from plot_utils import create_pokebola_sidebar, create_pokebola_spinner, load_pokemon_data
 
 # Load Pokémon data
 df = load_pokemon_data()
