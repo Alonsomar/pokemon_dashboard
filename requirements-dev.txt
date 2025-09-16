@@ -1,0 +1,4 @@
+pytest>=8.2
+dash[testing]>=2.17
+ruff>=0.5
+pre-commit>=3.7
