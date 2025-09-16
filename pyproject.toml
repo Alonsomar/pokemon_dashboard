@@ -1,0 +1,12 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+# Conjunto razonable y rápido
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF"]
+ignore = ["E501", "C408"]  # no forzar long lines ni literales dict
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
