@@ -8,7 +8,6 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
-
 def test_app_imports_and_has_layout():
     mod = importlib.import_module("app")
     assert hasattr(mod, "app"), "app.py debe exponer una variable `app` (instancia Dash)"
